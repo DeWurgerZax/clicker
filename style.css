@@ -1,0 +1,71 @@
+html, body{
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}
+body{
+  background-image: url(imgs/first.jpg);
+  background-size: cover;
+  box-shadow: inset 0px 0px 50px 30px black;
+  transition: 1s;
+  /*cursor: url(imgs/cursor.png), auto;*/
+  /*background-repeat: no-repeat;*/
+}
+#startField{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: grey;
+  position: absolute;
+  z-index: 99;
+  transition: 1.5s;
+}
+#startBtn{
+  height: 100px;
+  width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px solid black;
+  color: white;
+  cursor: pointer;
+}
+#heroHP{
+  height: 30px;
+  width: 200px;
+  background-color: darkred;
+  border: 2px solid black;
+  border-radius: 0px 0px 15px 0px;
+  box-sizing: border-box;
+  box-shadow: inset 0px 0px 5px black;
+  transform: translate(20px, 20px);
+}
+#hero{
+  /*background-image: url(imgs/revolver.png);*/
+  background-size: cover;
+  width: 255px;
+  height: 210px;
+  position: absolute;
+  /*left: calc(50% - 122px);*/
+  bottom: 0;
+}
+.watchmen{
+  height: 300px;
+  width: 300px;
+  background-image: url(imgs/watchmen_edit.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  transform: translate(500px, 500px);
+  box-shadow: none;
+  border-radius: 15px;
+  user-select: none;
+}
+/* .watchmenHP{
+  position: relative;
+  height: 50px;
+  width: 50px;
+  background-color: red;
+} */
