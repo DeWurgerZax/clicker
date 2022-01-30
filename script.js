@@ -29,23 +29,59 @@ class Hero {
   constructor (hp = 300, dmg = 25) {
     this.curHP = hp;
     this.dmg = dmg;
+    this.bullets = 15;
+    this.rad = 200;
     this.HPbar = document.getElementById('heroHP');
+    this.radBar = document.getElementById('radiationBar');
   }
-
+  wasteBullets(){
+    //console.log(this.bullets);
+    this.bullets -= 1;
+    if(this.bullets <= 0){
+      this.bullets = 0;
+    }
+  }
+  reload(){
+    heroArms.style.backgroundImage = 'url(imgs/reload5.gif)';
+    setTimeout(() => {
+      this.bullets = 15;
+      heroArms.style.backgroundImage = 'url(imgs/static_edit.png)';
+    }, 9000);
+  }
   attack(dmg, mutNum) {
+    
     // enemyDMG0.broadcast(dmg);
     // enemyDMG1.broadcast(dmg);
     // enemyDMG2.broadcast(dmg);
     // enemyDMG3.broadcast(dmg);
     // enemyDMG4.broadcast(dmg);
-    obsArray[mutNum].broadcast(dmg);
+    if(this.bullets > 0){
+      obsArray[mutNum].broadcast(dmg);
+    }
+  }
+  heal(){
+    this.curHP += 100;
+    this.HPbar.style.width = `${this.curHP}px`;
+    this.curHP > 125 ? document.body.style.boxShadow = 'inset 0px 0px 50px 10px black' : '';
+  }
+  radiationDMG(){
+    setInterval(()=>{
+      this.rad -= 25;
+      this.radBar.style.width = `${this.rad}px`;
+    }, 2000);
+  }
+  changeFilter(){
+    this.rad += 100;
+    this.radBar.style.width = `${this.rad}px`;
   }
   takeDmg(dmg) {
-    if(gameStarted){
+   // if(gameStarted){
       this.curHP -= dmg;
       this.HPbar.style.width = `${this.curHP}px`;
-      document.body.style.boxShadow = 'inset 0px 0px 50px 10px red';
-    }
+      if(this.curHP <= 125){
+        document.body.style.boxShadow = 'inset 0px 0px 50px 10px red';
+      }
+   // }
   }
 }
 
@@ -55,6 +91,9 @@ const randPos = () => {
   return [xPos, yPos];
 }
 
+bandage0.style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
+filter0.style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
+
 class Enemy {
   constructor (num, hp, dmg, attSound, damagedSound) {
     this.num = num;
@@ -62,11 +101,11 @@ class Enemy {
     this.dmg = dmg;
     this.alive = true;
     this.att = new Audio();
-    this.att.volume = 0.4;
+    this.att.volume = 0.3;
     this.att.src = attSound;
     this.dmgSound = new Audio();
     this.dmgSound.src = damagedSound;
-    this.dmgSound.volume = 0.6;
+    this.dmgSound.volume = 0.4;
     this.mutant = document.querySelectorAll('.enemy');
     this.mutant[this.num].setAttribute('mutantnum', `${this.num}`);
     this.mutant[this.num].style.transition = '1s';
@@ -88,7 +127,7 @@ class Enemy {
   }
   attack(dmg){
     setInterval(() => {
-      if(this.alive){
+      if(this.alive && gameStarted){
         this.att.play();
         heroTakeDMG.broadcast(dmg);
         this.mutant[this.num].style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
@@ -150,11 +189,22 @@ const takeDMGArr = [takeDMG0, takeDMG1, takeDMG2, takeDMG3, takeDMG4];
 
 const attackEnemy = (event) => {
   const shootSound = new Audio();
-  shootSound.src = 'sounds/revolver_sound.mp3';
-  shootSound.play();
+  if(!event.target.classList.contains('bandage') && !event.target.classList.contains('filter') && hero.bullets > 0 && gameStarted){
+    shootSound.src = 'sounds/revolver_sound.mp3';
+    hero.wasteBullets();
+    shootSound.play();
+  };
   if(event.target.classList.contains('enemy')){
     const mutNum = event.target.getAttribute('mutantnum');
     hero.attack(hero.dmg, mutNum);
+  } else if(event.target.classList.contains('bandage')){
+    //heroHP.style.width = '300px';
+    event.target.remove();
+    hero.heal();
+  } else if(event.target.classList.contains('filter')){
+    //heroHP.style.width = '300px';
+    event.target.remove();
+    hero.changeFilter();
   }
 }
 
@@ -168,13 +218,23 @@ const startGame = () => {
   startField.style.transform = 'translateY(-1000px)';
   setTimeout(()=>{
     startField.remove();
+    hero.radiationDMG();
   }, 1500);
-  heroArms.style.backgroundImage = ' url(imgs/revolver.png)';
+  heroArms.style.backgroundImage = 'url(imgs/static_edit.png)';
   document.body.style.cursor = 'url(imgs/cursor.png), auto';
   gameStarted = true;
 }
 
-window.addEventListener('mousemove', heroMove);
+const reloadOnR = (event) => {
+  if(event.code === 'KeyR'){
+    hero.reload();
+  }
+}
 
+window.addEventListener('keydown', reloadOnR);
+window.addEventListener('mousemove', heroMove);
+window.addEventListener('contextmenu', (event) => {
+  event.preventDefault();
+})
 startBtn.addEventListener('click', startGame);
 document.body.addEventListener('click', attackEnemy);
