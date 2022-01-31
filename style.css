@@ -107,10 +107,10 @@ body{
   bottom: 0;
   z-index: 98;
 }
-.watchmen{
+.enemy{
   height: 300px;
   width: 300px;
-  background-image: url(imgs/watchmen_edit.png);
+  /*background-image: url(imgs/watchmen_edit.png);*/
   background-size: contain;
   background-repeat: no-repeat;
   position: absolute;
@@ -119,6 +119,9 @@ body{
   border-radius: 15px;
   user-select: none;
 }
+/* .watchmen{
+  background-image: url(imgs/watchmen_edit.png);
+} */
 /* .watchmenHP{
   position: relative;
   height: 50px;
