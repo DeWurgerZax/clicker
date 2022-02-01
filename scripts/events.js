@@ -11,11 +11,11 @@ const attackEnemy = (event) => {
     const mutNum = event.target.getAttribute('mutantnum');
     hero.attack(hero.dmg, mutNum);
   } else if(event.target.classList.contains('bandage')){
-    //heroHP.style.width = '300px';
+
     event.target.remove();
     hero.heal();
   } else if(event.target.classList.contains('filter')){
-    //heroHP.style.width = '300px';
+
     event.target.remove();
     hero.changeFilter();
   }
@@ -23,7 +23,11 @@ const attackEnemy = (event) => {
 
 const heroMove = (event) => {
   let coordX = event.x;
-  heroArms.style.transform = `translateX(${coordX}px)`;
+  if(coordX + heroArms.offsetWidth >= window.innerWidth){
+    heroArms.style.transform = `translateX(${window.innerWidth - heroArms.offsetWidth}px)`;
+  } else {
+    heroArms.style.transform = `translateX(${coordX}px)`;
+  }
 }
 
 const startGame = () => {
@@ -35,6 +39,7 @@ const startGame = () => {
   }, 1500);
   heroArms.style.backgroundImage = 'url(imgs/static_edit.png)';
   document.body.style.cursor = 'url(imgs/cursor.png), auto';
+  document.documentElement.requestFullscreen();
   createItems(1);
   gameStarted = true;
 }

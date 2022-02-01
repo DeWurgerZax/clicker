@@ -7,10 +7,8 @@ body{
   background-image: url(imgs/first.jpg);
   background-size: cover;
   box-shadow: inset 0px 0px 50px 30px black;
-  transition: 1s;
+  transition: 2s;
   user-select: none;
-  /*cursor: url(imgs/cursor.png), auto;*/
-  /*background-repeat: no-repeat;*/
 }
 #startField{
   height: 100%;
@@ -24,6 +22,8 @@ body{
   z-index: 99;
   transition: 1.5s;
   gap: 25px;
+  text-shadow: 2px 0px 5px rgb(102, 102, 0);
+  color: white;
 }
 #startBtn{
   height: 100px;
@@ -31,9 +31,30 @@ body{
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 5px solid black;
-  color: white;
+  /* border: 5px solid black; */
+  border-radius: 10px;
+  box-shadow: 2px -2px 5px black;
+  color: bisque;
   cursor: pointer;
+  font-size: 30px;
+  z-index: 98;
+}
+.gameOver{
+  background-color: grey;
+  display: flex;
+  box-shadow: inset 0px 0px 10px black;
+  color: brown;
+  height: 100px;
+  width: 200px;
+  border-radius: 10px;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  left: calc(50% - 100px);
+  top: -10%;
+  transition: 2s;
+  z-index: 97;
 }
 #reference{
   display: flex;
@@ -80,37 +101,32 @@ body{
   right: 20px;
   transform: translate(0px, 0px);
 }
-.bandage{
-  background-image: url(imgs/heal.png);
+.bandage, .filter{
   background-size: cover;
   position: absolute;
   width: 55px;
   height: 50px;
   cursor: url(imgs/cursor_grab.png), auto;
+  z-index: 96;
+}
+.bandage{
+  background-image: url(imgs/heal.png);
 }
 .filter{
   background-image: url(imgs/filter.png);
-  background-size: cover;
-  position: absolute;
-  width: 55px;
-  height: 50px;
-  cursor: url(imgs/cursor_grab.png), auto;
 }
 #hero{
-  /*background-image: url(imgs/revolver.png);*/
   background-size: 100% 100%;
   background-repeat: no-repeat;
   width: 505px;
   height: 270px;
   position: absolute;
-  /*left: calc(50% - 122px);*/
   bottom: 0;
   z-index: 98;
 }
 .enemy{
   height: 300px;
   width: 300px;
-  /*background-image: url(imgs/watchmen_edit.png);*/
   background-size: contain;
   background-repeat: no-repeat;
   position: absolute;
@@ -119,12 +135,3 @@ body{
   border-radius: 15px;
   user-select: none;
 }
-/* .watchmen{
-  background-image: url(imgs/watchmen_edit.png);
-} */
-/* .watchmenHP{
-  position: relative;
-  height: 50px;
-  width: 50px;
-  background-color: red;
-} */

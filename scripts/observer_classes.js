@@ -27,6 +27,7 @@ class Observer {
 
 class Hero {
   constructor (hp = 300, dmg = 25) {
+    this.alive = true;
     this.curHP = hp;
     this.dmg = dmg;
     this.bullets = 15;
@@ -35,29 +36,21 @@ class Hero {
     this.radBar = document.getElementById('radiationBar');
   }
   wasteBullets(){
-    //console.log(this.bullets);
     this.bullets -= 1;
     if(this.bullets <= 0){
       this.bullets = 0;
     }
   }
   reload(){
-    heroArms.style.backgroundImage = 'url(imgs/reload5.gif)';
+    heroArms.style.backgroundImage = 'url(imgs/reload.gif)';
     this.bullets = 0;
     setTimeout(() => {
       this.bullets = 15;
       heroArms.style.backgroundImage = 'url(imgs/static_edit.png)';
-    }, 9000);
+    }, 5400);
   }
   attack(dmg, mutNum) {
-    
-    // enemyDMG0.broadcast(dmg);
-    // enemyDMG1.broadcast(dmg);
-    // enemyDMG2.broadcast(dmg);
-    // enemyDMG3.broadcast(dmg);
-    // enemyDMG4.broadcast(dmg);
     if(this.bullets > 0){
-      console.log(dmg);
       obsArray[mutNum].broadcast(dmg);
     }
   }
@@ -70,8 +63,12 @@ class Hero {
   }
   radiationDMG(){
     setInterval(()=>{
-      this.rad -= 2;
+      this.rad -= 5;
       this.radBar.style.width = `${this.rad}px`;
+      if(this.rad <= 0 && this.alive === true) {
+        this.alive = false;
+        this.death();
+      }
     }, 200);
   }
   changeFilter(){
@@ -82,16 +79,31 @@ class Hero {
    // if(gameStarted){
       this.curHP -= dmg;
       this.HPbar.style.width = `${this.curHP}px`;
-      if(this.curHP <= 125){
+      if(this.curHP <= 125 && document.body.style.boxShadow !== 'inset 0px 0px 50px 10px red'){
         document.body.style.boxShadow = 'inset 0px 0px 50px 10px red';
-      }
+      } 
+      if(this.curHP <= 0 && this.alive === true){
+        this.curHP = 0;
+        this.alive = false;
+        this.death();
+      };
    // }
+  }
+  death() {
+    const gameOver = document.createElement('div');
+    gameOver.classList.add('gameOver');
+    gameOver.textContent = 'YOU DEAD';
+    gameOver.style.top = 'calc(50% - 50px)';
+    document.body.append(gameOver);
+    setTimeout(()=>{
+      location.reload();
+    }, 3000);
   }
 }
 
 const randPos = () => {
-  const xPos = Math.ceil(Math.random()*1500);
-  const yPos = Math.ceil(Math.random()*610);
+  let xPos = Math.ceil(Math.random() * (window.innerWidth - 350));
+  let yPos = Math.ceil(Math.random() * (window.innerHeight - 350));
   return [xPos, yPos];
 }
 const createItems = (n) => {
@@ -106,7 +118,7 @@ const createItems = (n) => {
     filter.style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
   }
 };
-let lvls = 3;
+let lvls = 6;
 let mutant = document.querySelectorAll('.enemy');
 let lvlCounter = 0;
 let deadArray = null;
@@ -128,7 +140,6 @@ class Enemy {
     this.dmgSound = new Audio();
     this.dmgSound.src = damagedSound;
     this.dmgSound.volume = 0.4;
-    //this.mutant = document.querySelectorAll('.enemy');
     mutant[this.num].setAttribute('mutantnum', `${this.num}`);
     mutant[this.num].style.transition = '1s';
     mutant[this.num].style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
@@ -142,53 +153,46 @@ class Enemy {
       this.curHP = 0;
       this.alive = false;
       obsArray[this.num].unsubscribe(takeDMGArr[this.num]);
-      mutant[this.num].style.boxShadow = 'inset 10px 10px 100px red';
+      mutant[this.num].style.opacity = '0';
       deadArray[this.num] = 'dead';
       setTimeout(() => {
-        //console.log(obsArray);
         deadArray = deadArray.filter(deadFilter);
-        // console.log(obsArray);
-        console.log(deadArray);
         mutant[this.num].remove();
         if(deadArray.length === 0) {
           lvls -= 1; 
-          if(lvls === 2){
-            stage2();
-            // enemyDMG0.unsubscribe(takeDMG0);
-            // enemyDMG1.unsubscribe(takeDMG1);
-            // enemyDMG2.unsubscribe(takeDMG2);
-            // enemyDMG3.unsubscribe(takeDMG3);
-            // enemyDMG4.unsubscribe(takeDMG4);
-          } else if(lvls === 1){
-            //console.log('stage3');
-            stage3();
-          } else if (lvls === 0){
-            console.log('game over');
+          if(lvls === 5){
+            stage2(10);
+          } else if(lvls === 4){
+            stage3(25);
+          } else if(lvls === 3){
+            let randomLVL = Math.floor(Math.random() * 2);
+            if(randomLVL === 0) {
+              stage2(3);
+            } else {
+              stage3(10);
+            }
+          } 
+          else if(lvls === 2){
+            let randomLVL = Math.floor(Math.random() * 2);
+            if(randomLVL === 0) {
+              stage2(2);
+            } else {
+              stage3(8);
+            }
+          } 
+          else if(lvls === 1){
+            let randomLVL = Math.floor(Math.random() * 2);
+            if(randomLVL === 0) {
+              stage2(1);
+            } else {
+              stage3(5);
+            }
+          } 
+          else{
+            theEnd();
           }
-          // let randomLVL = Math.floor(Math.random() * 2);
-          // if(lvlCounter < 3){
-          //   switch(randomLVL){
-          //     case 0 : {
-          //       stage2();
-          //       lvlCounter += 1;
-          //       console.log(lvlCounter);
-          //       break;
-          //     }
-          //     case 1 : {
-          //       console.log('stage 3');
-          //       lvlCounter += 1;
-          //       console.log(lvlCounter);
-          //       break;
-          //     }
-          //   }
-          // } else {
-          //   console.log('game over');
-          //   gameStarted = false;
-          // }
-
         }
       }, 500);
-      
     }
   }
   attack(dmg){
