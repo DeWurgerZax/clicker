@@ -1,6 +1,6 @@
 'use strict';
 
-const stage2 = (items) => {
+const stage2 = (b,f) => {
   enemyDMG0 = null;
   enemyDMG1 = null;
   enemyDMG2 = null;
@@ -13,7 +13,7 @@ const stage2 = (items) => {
   enemyDMG4 = new Observer();
   obsArray = [enemyDMG0, enemyDMG1, enemyDMG2, enemyDMG3, enemyDMG4];
   document.body.style.backgroundImage = 'url(imgs/second.jpg)';
-  createItems(items);
+  createItems(b, f);
   const stage2enemy0 = createEnemies(0, 285, 30, 'sounds/bear_attack.mp3', 'sounds/bear_dead.mp3', 'url(imgs/bear_edit.png)');
   const takeDMG0 = stage2enemy0.takeDmg.bind(stage2enemy0);
 

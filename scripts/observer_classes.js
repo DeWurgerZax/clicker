@@ -106,21 +106,23 @@ const randPos = () => {
   let yPos = Math.ceil(Math.random() * (window.innerHeight - 350));
   return [xPos, yPos];
 }
-const createItems = (n) => {
+const createItems = (n,m) => {
   for(let i = 0; i < n; i += 1){
     const bandage = document.createElement('div');
     bandage.classList.add('bandage');
+    bandage.style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
+    document.body.append(bandage);
+  }
+  for(let i = 0; i < n; i += 1){
     const filter = document.createElement('div');
     filter.classList.add('filter');
-    document.body.append(bandage);
-    document.body.append(filter);
-    bandage.style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
     filter.style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
+    document.body.append(filter);
   }
 };
 let lvls = 6;
 let mutant = document.querySelectorAll('.enemy');
-let lvlCounter = 0;
+// let lvlCounter = 0;
 let deadArray = null;
 class Enemy {
   
@@ -161,31 +163,31 @@ class Enemy {
         if(deadArray.length === 0) {
           lvls -= 1; 
           if(lvls === 5){
-            stage2(10);
+            stage2(10, 10);
           } else if(lvls === 4){
-            stage3(25);
+            stage3(25, 25);
           } else if(lvls === 3){
             let randomLVL = Math.floor(Math.random() * 2);
             if(randomLVL === 0) {
-              stage2(3);
+              stage2(3, 2);
             } else {
-              stage3(10);
+              stage3(10, 5);
             }
           } 
           else if(lvls === 2){
             let randomLVL = Math.floor(Math.random() * 2);
             if(randomLVL === 0) {
-              stage2(2);
+              stage2(4, 1);
             } else {
-              stage3(8);
+              stage3(8, 3);
             }
           } 
           else if(lvls === 1){
             let randomLVL = Math.floor(Math.random() * 2);
             if(randomLVL === 0) {
-              stage2(1);
+              stage2(6, 1);
             } else {
-              stage3(5);
+              stage3(10, 1);
             }
           } 
           else{

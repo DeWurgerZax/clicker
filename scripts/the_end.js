@@ -8,6 +8,7 @@ const theEnd = () => {
   for(let i = 0; i < deleteALL.length; i += 1){
     deleteALL[i].remove();
   }
+  document.body.style.boxShadow = 'none';
   document.body.style.backgroundImage = 'url(imgs/The-End.jpg)';
   document.body.style.display = 'flex';
   document.body.style.flexDirection = 'column';

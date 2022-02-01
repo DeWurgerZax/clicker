@@ -99,7 +99,7 @@ body{
   box-shadow: inset 0px 0px 5px black;
   position: absolute;
   right: 20px;
-  transform: translate(0px, 0px);
+  transform: translate(0px, 20px);
 }
 .bandage, .filter{
   background-size: cover;
