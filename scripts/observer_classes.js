@@ -28,6 +28,7 @@ class Observer {
 class Hero {
   constructor (hp = 300, dmg = 25) {
     this.alive = true;
+    this.reloading = false;
     this.curHP = hp;
     this.dmg = dmg;
     this.bullets = 15;
@@ -38,6 +39,7 @@ class Hero {
   wasteBullets(){
     this.bullets -= 1;
     if(this.bullets <= 0){
+      reloadText.style.opacity = '1';
       this.bullets = 0;
     }
   }
@@ -46,6 +48,7 @@ class Hero {
     heroArms.style.backgroundImage = 'url(imgs/reload.gif)';
     this.bullets = 0;
     setTimeout(() => {
+      reloadText.style.opacity = '0';
       this.bullets = 15;
       heroArms.style.backgroundImage = 'url(imgs/static_edit.png)';
       this.reloading = false;
@@ -56,7 +59,6 @@ class Hero {
       heroArms.style.backgroundImage = 'url(imgs/shoot.gif)';
       setTimeout(() => {
         heroArms.style.backgroundImage = 'url(imgs/static_edit.png)';
-
       }, 500);
       obsArray[mutNum].broadcast(dmg);
     }

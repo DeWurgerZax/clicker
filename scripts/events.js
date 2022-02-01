@@ -40,7 +40,7 @@ const startGame = () => {
   heroArms.style.backgroundImage = 'url(imgs/static_edit.png)';
   document.body.style.cursor = 'url(imgs/cursor.png), auto';
   document.documentElement.requestFullscreen();
-  createItems(1);
+  createItems(1, 1);
   gameStarted = true;
 }
 
