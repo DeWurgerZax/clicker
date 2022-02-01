@@ -42,15 +42,22 @@ class Hero {
     }
   }
   reload(){
+    this.reloading = true;
     heroArms.style.backgroundImage = 'url(imgs/reload.gif)';
     this.bullets = 0;
     setTimeout(() => {
       this.bullets = 15;
       heroArms.style.backgroundImage = 'url(imgs/static_edit.png)';
+      this.reloading = false;
     }, 5400);
   }
   attack(dmg, mutNum) {
-    if(this.bullets > 0){
+    if(this.bullets > 0 && !this.reloading){
+      heroArms.style.backgroundImage = 'url(imgs/shoot.gif)';
+      setTimeout(() => {
+        heroArms.style.backgroundImage = 'url(imgs/static_edit.png)';
+
+      }, 500);
       obsArray[mutNum].broadcast(dmg);
     }
   }
@@ -113,7 +120,7 @@ const createItems = (n,m) => {
     bandage.style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
     document.body.append(bandage);
   }
-  for(let i = 0; i < n; i += 1){
+  for(let i = 0; i < m; i += 1){
     const filter = document.createElement('div');
     filter.classList.add('filter');
     filter.style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
@@ -141,7 +148,7 @@ class Enemy {
     this.att.src = attSound;
     this.dmgSound = new Audio();
     this.dmgSound.src = damagedSound;
-    this.dmgSound.volume = 0.4;
+    this.dmgSound.volume = 0.5;
     mutant[this.num].setAttribute('mutantnum', `${this.num}`);
     mutant[this.num].style.transition = '1s';
     mutant[this.num].style.transform = `translate(${randPos()[0]}px, ${randPos()[1]}px)`;
